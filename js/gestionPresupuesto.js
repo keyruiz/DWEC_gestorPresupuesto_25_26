@@ -39,16 +39,16 @@ function CrearGasto(cadena, valorIntroducido) {
         this.actualizarValor = function(nuevoValor) {
             if (nuevoValor >= 0)
                 this.valor = nuevoValor;
-        }; 
-    return this;
+        };
 }
 
 function listarGastos() {
     return gastos;
 }
 
-function anyadirGasto() {
-
+function anyadirGasto(gasto) {
+    gasto.id = idGasto++;
+    gastos.push(gasto);
 }
 
 function borrarGasto() {
