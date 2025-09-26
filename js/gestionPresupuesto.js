@@ -20,26 +20,38 @@ function mostrarPresupuesto() {
     return `Tu presupuesto actual es de ${presupuesto} €`
 }
 
-function CrearGasto(cadena, valorIntroducido) {
+function CrearGasto(cadena, valorIntroducido, fecha, etiquetas = []) {
     if(isNaN(valorIntroducido) || valorIntroducido < 0)
         valorIntroducido = 0;
-    
-    
-        this.descripcion = cadena;
-        this.valor = valorIntroducido;
 
-        this.mostrarGasto = function() {
-            return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`
-        };
+    fecha = fecha.Date.parse();
+    if (isNaN(fecha)) {
+        fecha = Date.now();
+    }
+
+    this.descripcion = cadena;
+    this.valor = valorIntroducido;
+    this.fecha = fecha;
+    this.etiquetas = etiquetas;
+    this.mostrarGasto = function() {
+        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`
+    };
+    
+    this.actualizarDescripcion = function(nuevaDescripcion) {
+        this.descripcion = nuevaDescripcion;
+    };
+
+    this.actualizarValor = function(nuevoValor) {
+        if (nuevoValor >= 0)
+            this.valor = nuevoValor;
+    };
+
+    this.mostrarGastoCompleto = function() {
+        return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €
+        Fecha: ${toLocateString(this.fecha)}
+        Etiquetas:`
+    };
         
-        this.actualizarDescripcion = function(nuevaDescripcion) {
-            this.descripcion = nuevaDescripcion;
-        };
-
-        this.actualizarValor = function(nuevoValor) {
-            if (nuevoValor >= 0)
-                this.valor = nuevoValor;
-        };
 }
 
 function listarGastos() {
