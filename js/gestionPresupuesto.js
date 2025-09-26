@@ -20,19 +20,20 @@ function mostrarPresupuesto() {
     return `Tu presupuesto actual es de ${presupuesto} €`
 }
 
-function CrearGasto(cadena, valorIntroducido, fecha, etiquetas = []) {
+function CrearGasto(cadena, valorIntroducido, fecha, ...etiquetas) {
     if(isNaN(valorIntroducido) || valorIntroducido < 0)
         valorIntroducido = 0;
 
-    fecha = fecha.Date.parse();
+    fecha = Date.parse(fecha);
     if (isNaN(fecha)) {
         fecha = Date.now();
     }
 
     this.descripcion = cadena;
     this.valor = valorIntroducido;
-    this.fecha = fecha;
-    this.etiquetas = etiquetas;
+    this.fecha = Date.parse(fecha);
+    this.etiquetas;
+
     this.mostrarGasto = function() {
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`
     };
@@ -45,20 +46,26 @@ function CrearGasto(cadena, valorIntroducido, fecha, etiquetas = []) {
         if (nuevoValor >= 0)
             this.valor = nuevoValor;
     };
-
+    
     this.mostrarGastoCompleto = function() {
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €
-        Fecha: ${toLocateString(this.fecha)}
+        Fecha: ${new Date(this.fecha).toLocaleString()}
         Etiquetas:`
     };
         
-    this.actualizarFecha = function(fehcaNueva) {
-        fechaNueva = fechaNueva.Date.parse();
-        if (isNaN(fecha)) 
-            fecha = Date.now();
-        else
-            this.fecha = fechaNueva;
+    this.actualizarFecha = function(fechaNueva) {
+        fecha = Date.parse(fecha);
+        if (isNaN(fecha)) {
+            fecha = Date.now(); 
+        }
     }
+    this.anyadirEtiquetas = function(...etiquetas) {
+        for (let etiqueta of etiquetas) {
+            if (!this.etiquetas.includes(etiqueta))
+                this.etiquetas.push(etiqueta);
+        }
+    }
+    
 }
 
 function listarGastos() {
@@ -71,8 +78,8 @@ function anyadirGasto(gasto) {
 }
 
 function borrarGasto(idGasto) {
-    let index = gastos.findIndex(gasto => gasto.id ==idGasto);
-    if(index <= 0)
+    let index = gastos.findIndex(gasto => gasto.id == idGasto);
+    if(index >= 0)
         gastos.splice(index, 1);       
 }
 
