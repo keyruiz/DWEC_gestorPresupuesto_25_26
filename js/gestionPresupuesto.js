@@ -52,6 +52,13 @@ function CrearGasto(cadena, valorIntroducido, fecha, etiquetas = []) {
         Etiquetas:`
     };
         
+    this.actualizarFecha = function(fehcaNueva) {
+        fechaNueva = fechaNueva.Date.parse();
+        if (isNaN(fecha)) 
+            fecha = Date.now();
+        else
+            this.fecha = fechaNueva;
+    }
 }
 
 function listarGastos() {
