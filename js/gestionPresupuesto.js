@@ -32,7 +32,7 @@ function CrearGasto(cadena, valorIntroducido, fecha, ...etiquetas) {
     this.descripcion = cadena;
     this.valor = valorIntroducido;
     this.fecha = Date.parse(fecha);
-    this.etiquetas;
+    this.etiquetas = etiquetas;
 
     this.mostrarGasto = function() {
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €`
@@ -61,8 +61,15 @@ function CrearGasto(cadena, valorIntroducido, fecha, ...etiquetas) {
     }
     this.anyadirEtiquetas = function(...etiquetas) {
         for (let etiqueta of etiquetas) {
-            if (!this.etiquetas.includes(etiqueta))
+            if (!(this.etiquetas.includes(etiqueta)))
                 this.etiquetas.push(etiqueta);
+        }
+    }
+    this.borrarEtiquetas = function(...etiquetas) {
+        for (let etiqueta of etiquetas) {
+            let index = this.etiquetas.indexOf(etiqueta);
+            if (index >= 0)
+                this.etiquetas.splice(index, 1);
         }
     }
     
