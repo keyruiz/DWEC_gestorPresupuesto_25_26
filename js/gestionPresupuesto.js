@@ -77,6 +77,17 @@ function CrearGasto(cadena, valorIntroducido, fecha, ...etiquetas) {
                 this.etiquetas.splice(index, 1);
         }
     }
+    this.obtenerPeriodoAgrupacion = function(periodo) {
+        let fecha = new Date(this.fecha);
+        if(periodo == "mes")
+            return `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2, "0")}`;
+        else if(periodo == "anyo")
+            return fecha.getFullYear();
+        else if(periodo == "dia")
+            return `${fecha.getFullYear()}-${String(fecha.getMonth()+1).padStart(2, "0")}-${String(fecha.getDate()).padStart(2, "0")}`;
+        else
+            return "Periodo inválido"
+    }
     
 }
 
@@ -112,7 +123,7 @@ function filtrarGastos() {
 }
 
 function agruparGastos() {
-    
+
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
