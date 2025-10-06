@@ -23,7 +23,7 @@ function mostrarPresupuesto() {
 function CrearGasto(cadena, valorIntroducido, fecha, ...etiquetas) {
     if(isNaN(valorIntroducido) || valorIntroducido < 0)
         valorIntroducido = 0;
-
+    
     
     let fechaParseada = Date.parse(fecha);
 
@@ -107,6 +107,14 @@ function calcularBalance() {
     return (presupuesto - calcularTotalGastos())
 }
 
+function filtrarGastos() {
+
+}
+
+function agruparGastos() {
+    
+}
+
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
 // Las funciones y objetos deben tener los nombres que se indican en el enunciado
 // Si al obtener el código de una práctica se genera un conflicto, por favor incluye todo el código que aparece aquí debajo
@@ -118,5 +126,7 @@ export   {
     anyadirGasto,
     borrarGasto,
     calcularTotalGastos,
-    calcularBalance
+    calcularBalance,
+    filtrarGastos,
+    agruparGastos
 }
