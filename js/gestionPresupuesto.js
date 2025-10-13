@@ -88,7 +88,6 @@ function CrearGasto(cadena, valorIntroducido, fecha, ...etiquetas) {
         else
             return "Periodo inválido"
     }
-    
 }
 
 function listarGastos() {
@@ -118,8 +117,21 @@ function calcularBalance() {
     return (presupuesto - calcularTotalGastos())
 }
 
-function filtrarGastos() {
-
+function filtrarGastos(obj) {
+    let copiaGastos = [...gastos];
+    if(Object.hasOwn(obj, "fechaDesde"))
+        copiaGastos = copiaGastos.filter(gasto => gasto.fecha >= Date.parse(obj.fechaDesde));
+    if(Object.hasOwn(obj, "fechaHasta"))
+        copiaGastos = copiaGastos.filter(gasto => gasto.fecha <= Date.parse(obj.fechaHasta));
+    if(Object.hasOwn(obj, "valorMinimo"))
+        copiaGastos = copiaGastos.filter(gasto => gasto.valor >= obj.valorMinimo);
+    if(Object.hasOwn(obj, "valorMaximo"))
+        copiaGastos = copiaGastos.filter(gasto => gasto.valor <= obj.valorMaximo);
+    if(Object.hasOwn(obj, "descripcionContiene"))
+        copiaGastos = copiaGastos.filter(gasto => gasto.descripcion.toLowerCase().includes(obj.descripcionContiene.toLowerCase()));
+    if(Object.hasOwn(obj, "etiquetasTiene"))
+        copiaGastos = copiaGastos.filter(gasto => gasto.etiquetas.some(etiqueta => obj.etiquetasTiene.includes(etiqueta.toLowerCase())));    
+    return copiaGastos;
 }
 
 function agruparGastos() {
