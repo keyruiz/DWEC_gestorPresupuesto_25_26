@@ -119,9 +119,9 @@ function calcularBalance() {
 
 function filtrarGastos(obj) {
     let copiaGastos = [...gastos];
-    if(Object.hasOwn(obj, "fechaDesde"))
+    if(Object.hasOwn(obj, "fechaDesde")  && !isNaN(Date.parse(obj.fechaDesde)))
         copiaGastos = copiaGastos.filter(gasto => gasto.fecha >= Date.parse(obj.fechaDesde));
-    if(Object.hasOwn(obj, "fechaHasta"))
+    if(Object.hasOwn(obj, "fechaHasta") && !isNaN(Date.parse(obj.fechaHasta)))
         copiaGastos = copiaGastos.filter(gasto => gasto.fecha <= Date.parse(obj.fechaHasta));
     if(Object.hasOwn(obj, "valorMinimo"))
         copiaGastos = copiaGastos.filter(gasto => gasto.valor >= obj.valorMinimo);
@@ -130,12 +130,30 @@ function filtrarGastos(obj) {
     if(Object.hasOwn(obj, "descripcionContiene"))
         copiaGastos = copiaGastos.filter(gasto => gasto.descripcion.toLowerCase().includes(obj.descripcionContiene.toLowerCase()));
     if(Object.hasOwn(obj, "etiquetasTiene"))
-        copiaGastos = copiaGastos.filter(gasto => gasto.etiquetas.some(etiqueta => obj.etiquetasTiene.includes(etiqueta.toLowerCase())));    
+        copiaGastos = copiaGastos.filter(gasto => 
+            gasto.etiquetas.some(etiquetaGasto => 
+                obj.etiquetasTiene.some(etiquetaFiltro => 
+                    etiquetaGasto.toLowerCase() === etiquetaFiltro.toLowerCase()
+                )
+            )
+        );          
     return copiaGastos;
 }
 
-function agruparGastos() {
-
+function agruparGastos(periodo = "mes", etiquetas = [], fechaDesde, fechaHasta = Date.now()) {
+    let objetoFiltro = {
+        fechaDesde: fechaDesde,
+        fechaHasta: fechaHasta
+    }
+    if (etiquetas.length > 0)
+        objetoFiltro.etiquetasTiene = etiquetas;
+    let gastosFiltrados = filtrarGastos(objetoFiltro);
+    let resultado = gastosFiltrados.reduce((acc, gasto) =>{
+        let clave =gasto.obtenerPeriodoAgrupacion(periodo);
+        acc[clave] =  acc[clave] = (acc[clave] || 0) + gasto.valor;
+        return acc;
+    }, {});
+    return resultado;
 }
 
 // NO MODIFICAR A PARTIR DE AQUÍ: exportación de funciones y objetos creados para poder ejecutar los tests.
