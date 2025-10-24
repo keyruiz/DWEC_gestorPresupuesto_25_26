@@ -1,5 +1,4 @@
 function mostrarDatoEnId() {
-
 }
 
 function mostrarGastoWeb() {
@@ -7,7 +6,7 @@ function mostrarGastoWeb() {
 }
 
 function mostrarGastosAgrupadosWeb() {
-    
+
 }
 
 export {
