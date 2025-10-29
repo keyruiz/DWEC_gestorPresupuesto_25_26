@@ -30,3 +30,24 @@ let lista = gestion.listarGastos();
 lista.forEach ( elemento => {
     gestionWeb.mostrarGastoWeb("listado-gastos-completo", elemento)
 });
+
+let listaSep2021 = gestion.filtrarGastos({fechaDesde: "2021-09-01", fechaHasta: "2021-09-30"});
+listaSep2021.forEach ( elemento => {
+    gestionWeb.mostrarGastoWeb("listado-gastos-filtrado-1", elemento)
+});
+
+let listaMas50 = gestion.filtrarGastos({valorMinimo: 50});
+listaMas50.forEach ( elemento => {
+    gestionWeb.mostrarGastoWeb("listado-gastos-filtrado-2", elemento)
+});
+
+let listaMas200 = gestion.filtrarGastos({valorMinimo: 200});
+listaMas200.forEach ( elemento => {
+    gestionWeb.mostrarGastoWeb("listado-gastos-filtrado-3", elemento)
+});
+
+let listaConEtiquetas = gestion.filtrarGastos({etiquetasTiene: ["transporte", "comida"], valorMaximo: 50});
+listaConEtiquetas.forEach ( elemento => {
+    gestionWeb.mostrarGastoWeb("listado-gastos-filtrado-4", elemento)
+});
+
