@@ -25,3 +25,8 @@ gestionWeb.mostrarDatoEnId("gastos-totales", total);
 
 let balance = gestion.calcularBalance();
 gestionWeb.mostrarDatoEnId("balance-total" , balance);
+
+let lista = gestion.listarGastos();
+lista.forEach ( elemento => {
+    gestionWeb.mostrarGastoWeb("listado-gastos-completo", elemento)
+});
