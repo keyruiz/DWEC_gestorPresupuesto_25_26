@@ -51,3 +51,11 @@ listaConEtiquetas.forEach ( elemento => {
     gestionWeb.mostrarGastoWeb("listado-gastos-filtrado-4", elemento)
 });
 
+let agrupDia = gestion.agruparGastos("dia");
+gestionWeb.mostrarGastosAgrupadosWeb("agrupacion-dia", agrupDia,"dia");
+
+let agrupMes = gestion.agruparGastos("mes");
+gestionWeb.mostrarGastosAgrupadosWeb("agrupacion-mes", agrupMes,"mes");
+
+let agrupAnyo = gestion.agruparGastos("anyo");
+gestionWeb.mostrarGastosAgrupadosWeb("agrupacion-anyo", agrupAnyo,"anyo");
