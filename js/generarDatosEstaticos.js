@@ -22,3 +22,6 @@ gestion.anyadirGasto(gasto6);
 
 let total = gestion.calcularTotalGastos();
 gestionWeb.mostrarDatoEnId("gastos-totales", total);
+
+let balance = gestion.calcularBalance();
+gestionWeb.mostrarDatoEnId("balance-total" , balance);
