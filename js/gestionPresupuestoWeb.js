@@ -23,7 +23,8 @@ function mostrarGastoWeb(idElemento, gasto) {
 
     let divFecha = document.createElement("div");
     divFecha.classList.add("gasto-fecha");
-    divFecha.textContent = gasto.fecha;
+    let fecha = gasto.obtenerPeriodoAgrupacion("dia")
+    divFecha.textContent = fecha;
     divGasto.appendChild(divFecha);
 
     let divValor = document.createElement("div");
