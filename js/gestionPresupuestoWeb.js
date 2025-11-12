@@ -94,18 +94,30 @@ function repintar() {
     })
 }
 
-function Manejador() {
-    this.handleEvent  = function(event) {
+function actualizarPresupuestoWeb () {
         let presupuesto = prompt("Indica un presupuesto", "");
         presupuesto = Number(presupuesto)
         gestionPre.actualizarPresupuesto(presupuesto);
-        repintar();
-    }
+        repintar();    
 }
 
-let manejadorBoton = new Manejador();
 let botonActPresupuesto = document.getElementById("actualizarpresupuesto")
-botonActPresupuesto.addEventListener("click", manejadorBoton);
+botonActPresupuesto.addEventListener("click", actualizarPresupuestoWeb);
+
+function nuevoGastoWeb() {
+    let descripcion = prompt("Introduce la descripción del gasto:", "");
+    let valor = prompt("Introduce el valor del gasto:", "");
+    valor = Number(valor);
+    let fecha = prompt("Introduce la fecha del gasto (formato yyyy-mm-dd):", "");
+    let etiquetasTexto = prompt("Introduce las etiquetas (separadas por comas):", "");
+    let etiquetas = etiquetasTexto.split(",").map(e => e.trim());
+    let gasto = new gestionPre.CrearGasto(descripcion, valor, fecha, ...etiquetas)
+    gestionPre.anyadirGasto(gasto)
+    repintar();
+}
+
+let botonAnyPre = document.getElementById("anyadirgasto")
+botonAnyPre.addEventListener("click", nuevoGastoWeb);
 
 
 export {
