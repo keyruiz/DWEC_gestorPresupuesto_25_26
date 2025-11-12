@@ -48,6 +48,14 @@ function mostrarGastoWeb(idElemento, gasto) {
     manejadorEditar.gasto = gasto
     btnEditar.addEventListener("click", manejadorEditar)
     divGasto.appendChild(btnEditar);
+    //Botón borrar Gasto
+    let btnBorrar = document.createElement("button")
+    btnBorrar.classList.add("gasto-borrar")
+    btnBorrar.textContent = "Borrar"
+    let manejadorBorrar = new BorrarHandle();
+    manejadorBorrar.gasto = gasto
+    btnBorrar.addEventListener("click", manejadorBorrar)
+    divGasto.appendChild(btnBorrar);
     contenedor.appendChild(divGasto);
 }
 
@@ -143,8 +151,7 @@ function EditarHandle() {
 
 function BorrarHandle() {
     this.handleEvent  = function(event) {
-        let id = this.gasto.id
-        gestionPre.borrarGasto(id)
+        gestionPre.borrarGasto(this.gasto.id)
         repintar()
     }
 }
