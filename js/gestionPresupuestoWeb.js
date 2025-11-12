@@ -94,6 +94,20 @@ function repintar() {
     })
 }
 
+function Manejador() {
+    this.handleEvent  = function(event) {
+        let presupuesto = prompt("Indica un presupuesto", "");
+        presupuesto = Number(presupuesto)
+        gestionPre.actualizarPresupuesto(presupuesto);
+        repintar();
+    }
+}
+
+let manejadorBoton = new Manejador();
+let botonActPresupuesto = document.getElementById("actualizarpresupuesto")
+botonActPresupuesto.addEventListener("click", manejadorBoton);
+
+
 export {
     mostrarDatoEnId,
     mostrarGastoWeb,
