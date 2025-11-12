@@ -135,6 +135,14 @@ function EditarHandle() {
     }
 }
 
+function BorrarHandle() {
+    this.handleEvent  = function(event) {
+        let id = this.gasto.id
+        gestionPre.borrarGasto(id)
+        repintar()
+    }
+}
+
 export {
     mostrarDatoEnId,
     mostrarGastoWeb,
