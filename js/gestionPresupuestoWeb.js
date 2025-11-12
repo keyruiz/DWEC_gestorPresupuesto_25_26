@@ -141,11 +141,11 @@ botonAnyPre.addEventListener("click", nuevoGastoWeb);
 
 function EditarHandle() {
     this.handleEvent  = function(event) {
-        let descripcion = prompt("Introduce la descripción del gasto:", "");
-        let valor = prompt("Introduce el valor del gasto:", "");
+        let descripcion = prompt("Introduce la descripción del gasto:", this.gasto.descripcion);
+        let valor = prompt("Introduce el valor del gasto:", this.gasto.valor);
         valor = Number(valor);
-        let fecha = prompt("Introduce la fecha del gasto (formato yyyy-mm-dd):", "");
-        let etiquetasTexto = prompt("Introduce las etiquetas (separadas por comas):", "");
+        let fecha = prompt("Introduce la fecha del gasto (formato yyyy-mm-dd):", this.gasto.fecha);
+        let etiquetasTexto = prompt("Introduce las etiquetas (separadas por comas):", this.gasto.etiquetas);
         let etiquetas = etiquetasTexto.split(",").map(e => e.trim());
         this.gasto.actualizarValor(valor)
         this.gasto.actualizarDescripcion(descripcion)
