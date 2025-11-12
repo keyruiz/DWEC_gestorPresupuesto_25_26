@@ -39,11 +39,17 @@ function mostrarGastoWeb(idElemento, gasto) {
         spanEtiqueta.textContent = etiqueta;
         divEtiquetas.appendChild(spanEtiqueta);
       });
-      divGasto.appendChild(divEtiquetas);
+    divGasto.appendChild(divEtiquetas);
+    //Boton editar Gasto
+    let btnEditar = document.createElement("button")
+    btnEditar.classList.add("gasto-editar")
+    btnEditar.textContent = "Editar"
+    let manejadorEditar = new EditarHandle();
+    manejadorEditar.gasto = gasto
+    btnEditar.addEventListener("click", manejadorEditar)
+    divGasto.appendChild(btnEditar);
     contenedor.appendChild(divGasto);
 }
-
-
 
 function mostrarGastosAgrupadosWeb(idElemento, agrup, periodo) {
     let contenedor = document.getElementById(idElemento);
