@@ -119,6 +119,21 @@ function nuevoGastoWeb() {
 let botonAnyPre = document.getElementById("anyadirgasto")
 botonAnyPre.addEventListener("click", nuevoGastoWeb);
 
+function EditarHandle() {
+    this.handleEvent  = function(event) {
+        let descripcion = prompt("Introduce la descripción del gasto:", "");
+        let valor = prompt("Introduce el valor del gasto:", "");
+        valor = Number(valor);
+        let fecha = prompt("Introduce la fecha del gasto (formato yyyy-mm-dd):", "");
+        let etiquetasTexto = prompt("Introduce las etiquetas (separadas por comas):", "");
+        let etiquetas = etiquetasTexto.split(",").map(e => e.trim());
+        this.gasto.actualizarValor(valor)
+        this.gasto.actualizarDescripcion(descripcion)
+        this.gasto.actualizarFecha(fecha)
+        this.gasto.anyadirEtiquetas(...etiquetas)
+        repintar()
+    }
+}
 
 export {
     mostrarDatoEnId,
