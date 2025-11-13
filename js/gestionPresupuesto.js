@@ -34,7 +34,7 @@ function CrearGasto(cadena, valorIntroducido, fecha, ...etiquetas) {
     }
 
     this.descripcion = cadena;
-    this.valor = valorIntroducido;
+    this.valor = valorIntroducido;                                                                                                                                                                                           
     this.etiquetas = etiquetas;
 
     this.mostrarGasto = function() {

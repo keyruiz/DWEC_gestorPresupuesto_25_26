@@ -144,7 +144,7 @@ function EditarHandle() {
         let descripcion = prompt("Introduce la descripción del gasto:", this.gasto.descripcion);
         let valor = prompt("Introduce el valor del gasto:", this.gasto.valor);
         valor = Number(valor);
-        let fecha = prompt("Introduce la fecha del gasto (formato yyyy-mm-dd):", this.gasto.fecha);
+        let fecha = prompt("Introduce la fecha del gasto (formato yyyy-mm-dd):", this.gasto.obtenerPeriodoAgrupacion("dia"));
         let etiquetasTexto = prompt("Introduce las etiquetas (separadas por comas):", this.gasto.etiquetas);
         let etiquetas = etiquetasTexto.split(",").map(e => e.trim());
         this.gasto.actualizarValor(valor)
