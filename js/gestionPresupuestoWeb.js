@@ -169,6 +169,33 @@ function BorrarEtiquetasHandle() {
     }
 }
 
+//en el cancel disable = true
+
+function nuevoGastoWebFormulario() {
+    //aqui añadir atributo disabled
+    let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);;
+    var form = plantillaFormulario.querySelector("form");
+    form.addEventListener("submit", manejaSubmit)
+}
+
+function manejaSubmit(event) {
+    event.preventDefault();
+    let form = event.currentTarget;
+    let des = form.elements["descripcion"].value.trim();
+    let valor = form.elements["valor"].value;
+    let fecha = form.elements["fecha"].value;
+    let etiquetas = form.elements["etiquetas"].value.split(",");
+    let gasto = gestionPre.CrearGasto(des, valor, fecha, ...etiquetas)
+    gestionPre.anyadirGasto(gasto);
+    repintar();
+    
+}
+
+let btnformanyadir = document.getElementById("anyadirgasto-formulario");
+btnformanyadir.addEventListener("click", nuevoGastoWebFormulario)
+
+
+
 export {
     mostrarDatoEnId,
     mostrarGastoWeb,
