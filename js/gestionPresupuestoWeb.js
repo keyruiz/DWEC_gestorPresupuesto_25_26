@@ -169,31 +169,40 @@ function BorrarEtiquetasHandle() {
     }
 }
 
-//en el cancel disable = true
-
 function nuevoGastoWebFormulario() {
-    //aqui añadir atributo disabled
+    document.getElementById("anyadirgasto-formulario").disabled = true;
     let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);;
-    var form = plantillaFormulario.querySelector("form");
-    form.addEventListener("submit", manejaSubmit)
-}
-
-function manejaSubmit(event) {
-    event.preventDefault();
-    let form = event.currentTarget;
-    let des = form.elements["descripcion"].value.trim();
-    let valor = form.elements["valor"].value;
-    let fecha = form.elements["fecha"].value;
-    let etiquetas = form.elements["etiquetas"].value.split(",");
-    let gasto = gestionPre.CrearGasto(des, valor, fecha, ...etiquetas)
-    gestionPre.anyadirGasto(gasto);
-    repintar();
-    
+    var form = plantillaFormulario.querySelector("form")
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        let form = event.currentTarget;
+        let des = form.elements["descripcion"].value.trim();
+        let valor = form.elements["valor"].value;
+        let fecha = form.elements["fecha"].value;
+        let etiquetas = form.elements["etiquetas"].value.split(",");
+        let gasto = gestionPre.CrearGasto(des, valor, fecha, ...etiquetas)
+        gestionPre.anyadirGasto(gasto);
+        repintar();
+        document.getElementById("anyadirgasto-formulario").disabled = false;
+    })
+    let btnCancelar = form.querySelector("button.cancelar")
+    let manejadorCancelar = new handleCancelar()
+    manejadorCancelar.formulario = form
+    manejadorCancelar.referencia = document.getElementById("anyadirgasto-formulario")
+    btnCancelar.addEventListener("click", manejadorCancelar)
+    document.getElementById("controlesprincipales").append(plantillaFormulario)
 }
 
 let btnformanyadir = document.getElementById("anyadirgasto-formulario");
-btnformanyadir.addEventListener("click", nuevoGastoWebFormulario)
+btnformanyadir.disabled = false;
+btnformanyadir.addEventListener("click", nuevoGastoWebFormulario);
 
+function handleCancelar() {
+    this.handleEvent = function(event) {
+        this.formulario.remove()
+        this.referencia.disabled = false
+    }
+}
 
 
 export {
