@@ -177,13 +177,14 @@ function nuevoGastoWebFormulario() {
         event.preventDefault();
         let form = event.currentTarget;
         let des = form.elements["descripcion"].value.trim();
-        let valor = form.elements["valor"].value;
+        let valor = Number(form.elements["valor"].value);
         let fecha = form.elements["fecha"].value;
         let etiquetas = form.elements["etiquetas"].value.split(",");
-        let gasto = gestionPre.CrearGasto(des, valor, fecha, ...etiquetas)
+        let gasto = new gestionPre.CrearGasto(des, valor, fecha, ...etiquetas)
         gestionPre.anyadirGasto(gasto);
-        repintar();
         document.getElementById("anyadirgasto-formulario").disabled = false;
+        console.log(gestionPre.listarGastos())
+        repintar();
     })
     let btnCancelar = form.querySelector("button.cancelar")
     let manejadorCancelar = new handleCancelar()
