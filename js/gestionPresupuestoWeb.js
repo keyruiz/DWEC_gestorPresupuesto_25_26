@@ -54,6 +54,14 @@ function mostrarGastoWeb(idElemento, gasto) {
     manejadorEditar.gasto = gasto
     btnEditar.addEventListener("click", manejadorEditar)
     divGasto.appendChild(btnEditar);
+    //Botón editar formulario
+    let btnEditarForm = document.createElement("button")
+    btnEditarForm.classList.add("gasto-editar-formulario")
+    btnEditarForm.textContent = "Editar (formulario)"
+    let manejadorEditarForm = new EditarHandleFormulario()
+    manejadorEditarForm.gasto = gasto;
+    btnEditarForm.addEventListener("click", manejadorEditarForm)
+    divGasto.appendChild(btnEditarForm)
     //Botón borrar Gasto
     let btnBorrar = document.createElement("button")
     btnBorrar.classList.add("gasto-borrar")
@@ -162,6 +170,43 @@ function BorrarHandle() {
     }
 }
 
+function EditarHandleFormulario() {
+    this.handleEvent = function(event) {
+        event.target.disabled = true;
+        let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);;
+        var form = plantillaFormulario.querySelector("form")
+        form.elements["descripcion"].value = this.gasto.descripcion;
+        form.elements["valor"].value = this.gasto.valor;
+        form.elements["etiquetas"].value = this.gasto.etiquetas;
+        form.elements["fecha"].value = this.gasto.fecha;
+        let manejadorEnviar = new EnviarHandle();
+        manejadorEnviar.gasto = this.gasto
+        form.addEventListener("submit", manejadorEnviar)
+        let btnCancelar = form.querySelector("button.cancelar")
+        let manejadorCancelar = new handleCancelar()
+        manejadorCancelar.formulario = form
+        manejadorCancelar.referencia = event.currentTarget
+        btnCancelar.addEventListener("click", manejadorCancelar)
+        event.target.insertAdjacentElement("afterend", form);
+    }
+}
+
+function EnviarHandle() {
+    this.handleEvent = function(event) {
+        event.preventDefault();
+        let form = event.currentTarget;
+        let des = form.elements["descripcion"].value.trim();
+        let valor = Number(form.elements["valor"].value);
+        let fecha = form.elements["fecha"].value;
+        let etiquetas = form.elements["etiquetas"].value.split(",");
+        this.gasto.actualizarValor(valor)
+        this.gasto.actualizarDescripcion(des)
+        this.gasto.actualizarFecha(fecha)
+        this.gasto.anyadirEtiquetas(...etiquetas)
+        repintar();
+    }
+}
+
 function BorrarEtiquetasHandle() {
     this.handleEvent  = function(event) {
         this.gasto.borrarEtiquetas(this.etiqueta)
@@ -183,7 +228,6 @@ function nuevoGastoWebFormulario() {
         let gasto = new gestionPre.CrearGasto(des, valor, fecha, ...etiquetas)
         gestionPre.anyadirGasto(gasto);
         document.getElementById("anyadirgasto-formulario").disabled = false;
-        console.log(gestionPre.listarGastos())
         repintar();
     })
     let btnCancelar = form.querySelector("button.cancelar")
