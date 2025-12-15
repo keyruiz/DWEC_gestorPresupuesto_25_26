@@ -274,6 +274,7 @@ function filtrarGastosWeb() {
     if (fechaHas.trim() !== '')
         objeto.fechaHasta = fechaHas;
     let filtrados = gestionPre.filtrarGastos(objeto)
+    document.getElementById("listado-gastos-completo").innerHTML = ""
     filtrados.forEach(g => {
         mostrarGastoWeb("listado-gastos-completo", g)
     })
