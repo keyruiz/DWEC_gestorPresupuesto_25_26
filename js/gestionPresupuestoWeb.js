@@ -283,6 +283,20 @@ function filtrarGastosWeb() {
 document.getElementById("formulario-filtrado").addEventListener("submit",filtrarGastosWeb)
 
 
+function guardarGastosWeb() {
+    localStorage.setItem("GestorGastosDWEC", JSON.stringify(gestionPre.listarGastos()))
+}
+document.getElementById("guardar-gastos").addEventListener("click", guardarGastosWeb)
+
+function cargarGastosWeb() {
+    let datos = JSON.parse(localStorage.getItem("GestorGastosDWEC"))
+    if (!Array.isArray(datos) || datos.length == 0)
+        datos = []
+    gestionPre.cargarGastos(datos)
+    repintar()
+}
+document.getElementById("cargar-gastos").addEventListener("click",cargarGastosWeb)
+
 export {
     mostrarDatoEnId,
     mostrarGastoWeb,
