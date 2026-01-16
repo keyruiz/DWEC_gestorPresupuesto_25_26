@@ -297,6 +297,25 @@ function cargarGastosWeb() {
 }
 document.getElementById("cargar-gastos").addEventListener("click",cargarGastosWeb)
 
+async function cargarGastosApi() {
+    const nombre = document.getElementById("nombre_usuario")
+    const url = `https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombre}`
+    const options = {
+        method: 'GET'
+    }
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) throw new Error('Error en la peticioón')
+        gestionPre.cargarGastos(response)
+        repintar()
+    } catch {
+        console.error(error);
+    }
+}
+
+document.getElementById("cargar-gastos-api").addEventListener("click", cargarGastosApi)
+
 export {
     mostrarDatoEnId,
     mostrarGastoWeb,
