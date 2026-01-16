@@ -244,6 +244,9 @@ function BorrarAPI() {
         }
 }
 
+function EnviarAPI() {
+    
+}
 
 function nuevoGastoWebFormulario() {
     document.getElementById("anyadirgasto-formulario").disabled = true;
@@ -266,6 +269,8 @@ function nuevoGastoWebFormulario() {
     manejadorCancelar.formulario = form
     manejadorCancelar.referencia = document.getElementById("anyadirgasto-formulario")
     btnCancelar.addEventListener("click", manejadorCancelar)
+    let btnEnViarAPI = form.querySelector("button.gasto-enviar-api")
+    btnEnViarAPI.addEventListener("click")
     document.getElementById("controlesprincipales").append(plantillaFormulario)
 }
 
