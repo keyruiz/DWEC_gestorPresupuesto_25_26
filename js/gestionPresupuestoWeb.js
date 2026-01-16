@@ -1,5 +1,7 @@
 import * as gestionPre from "./gestionPresupuesto.js"
 
+const base_url = `https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest`
+
 function mostrarDatoEnId(idElemento, valor) {
     const elemento = document.getElementById(idElemento);
 
@@ -70,6 +72,14 @@ function mostrarGastoWeb(idElemento, gasto) {
     manejadorBorrar.gasto = gasto
     btnBorrar.addEventListener("click", manejadorBorrar)
     divGasto.appendChild(btnBorrar);
+    //Botón borrar API 
+    let btnBorrarApi = document.createElement("button")
+    btnBorrarApi.classList.add("gasto-borrar-api")
+    btnBorrarApi.textContent = "Borrar (API)"
+    let manejadorBorrarApi = new BorrarAPI()
+    manejadorBorrarApi.id = gasto.id
+    btnBorrarApi.addEventListener('click', manejadorBorrarApi)
+    divGasto.appendChild(btnBorrarApi)
     contenedor.appendChild(divGasto);
 }
 
@@ -214,6 +224,27 @@ function BorrarEtiquetasHandle() {
     }
 }
 
+function BorrarAPI() {
+        this.handleEvent = async function(event) {
+            const id = this.id
+            const nombre = document.getElementById("nombre_usuario").value           
+            const url = `${base_url}/${nombre}/${id}`
+            const options = {
+                method: 'DELETE',
+            }
+            
+            try {
+                const response = await fetch(url, options)
+
+                if(!response.ok) throw new Error('Error al eliminar')
+                cargarGastosApi()
+            } catch (error){
+                console.error(error)
+            }
+        }
+}
+
+
 function nuevoGastoWebFormulario() {
     document.getElementById("anyadirgasto-formulario").disabled = true;
     let plantillaFormulario = document.getElementById("formulario-template").content.cloneNode(true);;
@@ -298,16 +329,16 @@ function cargarGastosWeb() {
 document.getElementById("cargar-gastos").addEventListener("click",cargarGastosWeb)
 
 async function cargarGastosApi() {
-    const nombre = document.getElementById("nombre_usuario")
-    const url = `https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest/${nombre}`
+    const nombre = document.getElementById("nombre_usuario").value
+    const url = `${base_url}/${nombre}`
     const options = {
         method: 'GET'
     }
-
     try {
         const response = await fetch(url, options);
+        const datos = await response.json()
         if (!response.ok) throw new Error('Error en la peticioón')
-        gestionPre.cargarGastos(response)
+        gestionPre.cargarGastos(datos)
         repintar()
     } catch {
         console.error(error);
