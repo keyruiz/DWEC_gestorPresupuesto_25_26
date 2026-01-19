@@ -197,6 +197,8 @@ function EditarHandleFormulario() {
         manejadorCancelar.formulario = form
         manejadorCancelar.referencia = event.currentTarget
         btnCancelar.addEventListener("click", manejadorCancelar)
+        let btnEnviarApi = form.querySelector("button.borrar-api")
+        btnEnviarApi.addEventListener("click", EnviarAPI)
         event.target.insertAdjacentElement("afterend", form);
     }
 }
@@ -230,7 +232,7 @@ function BorrarAPI() {
             const nombre = document.getElementById("nombre_usuario").value           
             const url = `${base_url}/${nombre}/${id}`
             const options = {
-                method: 'DELETE',
+                method: 'DELETE'
             }
             
             try {
@@ -244,9 +246,21 @@ function BorrarAPI() {
         }
 }
 
-function EnviarAPI() {
-    
+async function EnviarPOSTAPI() {
+    const nombre = document.getElementById("nombre_usuario").value
+    const url = `${base_url}/${nombre}`
+    const options = {
+        method: 'POST'
+    }
+    try {
+        const response = await fetch(url, options)
+        if(!response.ok) throw new Error('Error al eliminar')
+        cargarGastosApi()
+    } catch (error){
+        console.error(error)
+    }
 }
+
 
 function nuevoGastoWebFormulario() {
     document.getElementById("anyadirgasto-formulario").disabled = true;
@@ -269,8 +283,8 @@ function nuevoGastoWebFormulario() {
     manejadorCancelar.formulario = form
     manejadorCancelar.referencia = document.getElementById("anyadirgasto-formulario")
     btnCancelar.addEventListener("click", manejadorCancelar)
-    let btnEnViarAPI = form.querySelector("button.gasto-enviar-api")
-    btnEnViarAPI.addEventListener("click")
+    let btnEnviarAPI = form.querySelector("button.gasto-enviar-api")
+    btnEnviarAPI.addEventListener("click", EnviarPOSTAPI)
     document.getElementById("controlesprincipales").append(plantillaFormulario)
 }
 
