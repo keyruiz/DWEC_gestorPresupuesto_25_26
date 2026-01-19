@@ -197,8 +197,10 @@ function EditarHandleFormulario() {
         manejadorCancelar.formulario = form
         manejadorCancelar.referencia = event.currentTarget
         btnCancelar.addEventListener("click", manejadorCancelar)
-        let btnEnviarApi = form.querySelector("button.borrar-api")
-        btnEnviarApi.addEventListener("click", EnviarAPI)
+        let btnEnviarApi = form.querySelector("button.gasto-enviar-api")
+        let manejdorEditarAPI = new HandleEnviarPUTAPI()
+        manejdorEditarAPI.id = this.gasto.id
+        btnEnviarApi.addEventListener("click", manejdorEditarAPI)
         event.target.insertAdjacentElement("afterend", form);
     }
 }
@@ -232,12 +234,12 @@ function BorrarAPI() {
             const nombre = document.getElementById("nombre_usuario").value           
             const url = `${base_url}/${nombre}/${id}`
             const options = {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' }
             }
             
             try {
                 const response = await fetch(url, options)
-
                 if(!response.ok) throw new Error('Error al eliminar')
                 cargarGastosApi()
             } catch (error){
@@ -250,17 +252,38 @@ async function EnviarPOSTAPI() {
     const nombre = document.getElementById("nombre_usuario").value
     const url = `${base_url}/${nombre}`
     const options = {
-        method: 'POST'
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre })
     }
     try {
         const response = await fetch(url, options)
-        if(!response.ok) throw new Error('Error al eliminar')
+        if(!response.ok) throw new Error('Error al enviar')
         cargarGastosApi()
     } catch (error){
         console.error(error)
     }
 }
 
+function HandleEnviarPUTAPI() {
+    this.handleEvent = async function(event) {
+        const nombre = document.getElementById("nombre_usuario").value
+        const id = this.id
+        const url = `${base_url}/${nombre}/${id}`
+        const options = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre })
+        }
+        try {
+            const response = await fetch(url, options)
+            console.log(id)
+            if(!response.ok) throw new Error('Error al enviar')
+        } catch (error){
+            console.error(error)
+    }
+    }
+}
 
 function nuevoGastoWebFormulario() {
     document.getElementById("anyadirgasto-formulario").disabled = true;
