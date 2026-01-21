@@ -1,6 +1,6 @@
 import * as gestionPre from "./gestionPresupuesto.js"
 
-const base_url = `https://suhhtqjccd.execute-api.eu-west-1.amazonaws.com/latest`
+const base_url = `https://gestion-presupuesto-api.onrender.com/api`
 
 function mostrarDatoEnId(idElemento, valor) {
     const elemento = document.getElementById(idElemento);
@@ -77,7 +77,7 @@ function mostrarGastoWeb(idElemento, gasto) {
     btnBorrarApi.classList.add("gasto-borrar-api")
     btnBorrarApi.textContent = "Borrar (API)"
     let manejadorBorrarApi = new BorrarAPI()
-    manejadorBorrarApi.id = gasto.id
+    manejadorBorrarApi.gasto = gasto
     btnBorrarApi.addEventListener('click', manejadorBorrarApi)
     divGasto.appendChild(btnBorrarApi)
     contenedor.appendChild(divGasto);
@@ -199,7 +199,7 @@ function EditarHandleFormulario() {
         btnCancelar.addEventListener("click", manejadorCancelar)
         let btnEnviarApi = form.querySelector("button.gasto-enviar-api")
         let manejdorEditarAPI = new HandleEnviarPUTAPI()
-        manejdorEditarAPI.id = this.gasto.id
+        manejdorEditarAPI.gasto = this.gasto;
         btnEnviarApi.addEventListener("click", manejdorEditarAPI)
         event.target.insertAdjacentElement("afterend", form);
     }
@@ -230,7 +230,7 @@ function BorrarEtiquetasHandle() {
 
 function BorrarAPI() {
         this.handleEvent = async function(event) {
-            const id = this.id
+            const id = this.gasto.gastoId
             const nombre = document.getElementById("nombre_usuario").value           
             const url = `${base_url}/${nombre}/${id}`
             const options = {
@@ -248,13 +248,13 @@ function BorrarAPI() {
         }
 }
 
-async function EnviarPOSTAPI() {
+async function EnviarPOSTAPI(gasto) {
     const nombre = document.getElementById("nombre_usuario").value
     const url = `${base_url}/${nombre}`
     const options = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre })
+        body: JSON.stringify(gasto)
     }
     try {
         const response = await fetch(url, options)
@@ -268,17 +268,17 @@ async function EnviarPOSTAPI() {
 function HandleEnviarPUTAPI() {
     this.handleEvent = async function(event) {
         const nombre = document.getElementById("nombre_usuario").value
-        const id = this.id
+        const gasto = this.gasto.gastoId
         const url = `${base_url}/${nombre}/${id}`
         const options = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre })
+            body: JSON.stringify(gasto)
         }
         try {
             const response = await fetch(url, options)
-            console.log(id)
             if(!response.ok) throw new Error('Error al enviar')
+                cargarGastosApi()
         } catch (error){
             console.error(error)
     }
@@ -307,7 +307,16 @@ function nuevoGastoWebFormulario() {
     manejadorCancelar.referencia = document.getElementById("anyadirgasto-formulario")
     btnCancelar.addEventListener("click", manejadorCancelar)
     let btnEnviarAPI = form.querySelector("button.gasto-enviar-api")
-    btnEnviarAPI.addEventListener("click", EnviarPOSTAPI)
+    btnEnviarAPI.addEventListener("click", function(event) {
+        event.preventDefault()
+        let gastoParaAPI = {
+            descripcion: form.elements["descripcion"].value.trim(),
+            valor: Number(form.elements["valor"].value),
+            fecha: form.elements["fecha"].value,
+            etiquetas: form.elements["etiquetas"].value.split(",")
+        };
+        EnviarPOSTAPI(gastoParaAPI)
+    })
     document.getElementById("controlesprincipales").append(plantillaFormulario)
 }
 
