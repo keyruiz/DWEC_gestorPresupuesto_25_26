@@ -200,6 +200,7 @@ function EditarHandleFormulario() {
         let btnEnviarApi = form.querySelector("button.gasto-enviar-api")
         let manejdorEditarAPI = new HandleEnviarPUTAPI()
         manejdorEditarAPI.gasto = this.gasto;
+        manejdorEditarAPI.formulario = form;
         btnEnviarApi.addEventListener("click", manejdorEditarAPI)
         event.target.insertAdjacentElement("afterend", form);
     }
@@ -268,17 +269,24 @@ async function EnviarPOSTAPI(gasto) {
 function HandleEnviarPUTAPI() {
     this.handleEvent = async function(event) {
         const nombre = document.getElementById("nombre_usuario").value
-        const gasto = this.gasto.gastoId
+        const id = this.gasto.gastoId
         const url = `${base_url}/${nombre}/${id}`
+        const form = this.formulario;
+        const gastoActualizado = {
+            descripcion: form.elements["descripcion"].value.trim(),
+            valor: Number(form.elements["valor"].value),
+            fecha: form.elements["fecha"].value,
+            etiquetas: form.elements["etiquetas"].value.split(",")
+        };
         const options = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(gasto)
+            body: JSON.stringify(gastoActualizado)
         }
         try {
             const response = await fetch(url, options)
             if(!response.ok) throw new Error('Error al enviar')
-                cargarGastosApi()
+            cargarGastosApi()
         } catch (error){
             console.error(error)
     }
